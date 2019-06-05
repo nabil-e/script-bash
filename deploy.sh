@@ -17,8 +17,9 @@ if [ "$1" == "--create" ];then
 	nbr_machine=1
 
 	[ "$2" != "" ] && nbr_machine=$2
-	docker run -tid --name $USER.alpine alpine:latest
-
+	for i in $(seq 1 $nbr_machine);do
+		docker run -tid --name $USER.alpine-$i alpine:latest
+	done
 	echo "J'ai créé ${nbr_machine} containers"
 # si option drop
 elif [ "$1" == "--drop" ];then
@@ -26,7 +27,7 @@ elif [ "$1" == "--drop" ];then
 	echo "notre option est --drop"
 	echo ""
 
-	docker rm -f $USER.alpine
+	docker rm -f $(docker ps | grep $USER.alpine | awk '{print $1}')
 
 	echo "container supprimé"
 # si option start
