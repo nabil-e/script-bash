@@ -14,13 +14,21 @@ if [ "$1" == "--create" ];then
 	echo ""
 	echo "notre option est --create"
 	echo ""
+	nbr_machine=1
 
+	[ "$2" != "" ] && nbr_machine=$2
+	docker run -tid --name $USER.alpine alpine:latest
+
+	echo "J'ai créé ${nbr_machine} containers"
 # si option drop
 elif [ "$1" == "--drop" ];then
 	echo ""
 	echo "notre option est --drop"
 	echo ""
 
+	docker rm -f $USER.alpine
+
+	echo "container supprimé"
 # si option start
 elif [ "$1" == "--start" ];then
 	echo "notre option est --start"
@@ -32,12 +40,14 @@ elif [ "$1" == "--infos" ];then
 	echo "notre option est --infos"
 	echo ""
 
+	
+
 # si option ansible
 elif [ "$1" == "--ansible" ];then
 	echo ""
 	echo "notre option est --ansible"
 	echo ""
-	
+
 # si aucune option affichage de l'aide
 else
 
