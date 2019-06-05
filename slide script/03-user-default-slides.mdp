@@ -1,0 +1,99 @@
+%title: SHELL - user & défauts
+%author: xavki
+
+
+
+-> SHELL : les variables d'environnement et fixer un défaut <-
+=========
+
+<br>
+
+*Objectif : utiliser le nom d'utilisateur*
+
+<br>
+
+* les variables :
+	- définition : 
+		mavariable="valeur"
+	- utilisation :
+		echo $mavariable
+
+<br>
+
+* variables d'environnement :
+	- liste en tapant : env
+	- majuscule en général
+	- principales :
+		- $HOME
+		- $USER
+		- $LANG
+		- $SHELL
+		- ...
+
+------------------------------------------------------------
+
+
+
+-> Gestion de conteneur : name avec $USER <-
+
+<br>
+
+*Objectif : lancer et supprimer un conteneur*
+
+<br>
+
+* lancer un conteneur :
+
+```
+docker run -tid --name monom alpine:latest
+```
+
+* intégration du user :
+
+```
+docker run -tid --name $USER alpine:latest
+	
+```
+
+<br>
+
+* lister nos(notre) conteneur :
+
+```
+docker ps -a | grep $USER
+```
+
+* supprimer ce conteneur:
+
+```
+docker rm -f $USER
+```
+
+
+----------------------------------------------------------------------
+
+-> Définir une valeur par défaut <-
+
+<br>
+
+*Objectif : nombre de conteneurs à déployer*
+
+<br>
+
+* en mode long
+
+```
+if [ -z $2 ];then
+        nb_machine=1
+else
+        nb_machine=$2
+fi
+```
+
+<br>
+
+* en mode court
+```
+nb_machine=1
+[ "$2" != "" ] && nb_machine=$2
+```

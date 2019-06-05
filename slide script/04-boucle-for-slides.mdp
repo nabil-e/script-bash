@@ -1,0 +1,60 @@
+%title: SHELL - boucle FOR
+%author: xavki
+
+
+
+-> SHELL : la boucle FOR <-
+=========
+
+*Objectif : créer des conteneurs avec une boucle*
+
+
+* itération de valeur dans un tableau (in)
+
+* pas de (i=1;i=10;i++)
+
+<br>
+
+
+
+* deux méthodes pour les nombres :
+
+	- utilisation de la commande : seq
+
+```
+	for i in $(seq 1 10);do
+		echo $i
+	done 
+```
+
+<br>
+
+	- utilisation de {x..x}
+
+```
+	for i in {1..10};do
+		echo $i
+	done 
+```
+
+
+-----------------------------------------------------------------
+
+-> Mise en pratique <-
+
+
+
+
+
+* Rappel :
+	- nb_machine : nombre de conteneurs
+	- USER : nom du user en cours
+
+
+
+
+```
+for i in $(seq 1 $nb_machine);do
+	docker run -tid --name $USER-$i alpine
+done
+```

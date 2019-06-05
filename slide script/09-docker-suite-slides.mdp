@@ -1,0 +1,68 @@
+%title: SHELL - Docker
+%author: xavki
+
+
+
+
+
+
+-> SHELL : Habillage du conteneur <-
+=========
+
+*Objectif : ajout du user et run *
+
+* petite correction du Dockerfile et push gitlab = ok
+					- mot de passe root = password
+
+* le run du conteneur évolue pour systemd :
+
+```
+docker run -tid --name $USER-alpine-$i alpine:latest
+```
+
+par
+
+```
+docker run -tid --cap-add NET_ADMIN --cap-add SYS_ADMIN --publish-all=true -v /srv/data:/srv/html -v /sys/fs/cgroup:/sys/fs/cgroup:ro --name $USER-debian-$i -h $USER-debian-$i <nom_image>
+```
+
+* Création du user en cours (password):
+
+```
+docker exec -ti $USER-debian-$i /bin/bash -c "useradd -m -p sa3tHJ3/KuYvI $USER"
+perl -e 'print crypt("password", "salt"),"\n"'
+```
+
+--------------------------------------------------------------------------
+
+
+*Objectif : ajout clef publique *
+
+
+
+
+* Installation dela clef publique du user en cours (à générer avant) :
+
+```
+ssh-keygen -t rsa -b 4096
+```
+
+et on la copie sur le chaque conteneur :
+
+```
+docker exec -ti ${USERNAME}-deb-vmparc${i} /bin/bash -c "mkdir  ${HOME}/.ssh && chmod 700 ${HOME}/.ssh && chown $USER:$USER $HOME/.ssh"
+docker cp $HOME/.ssh/id_rsa.pub $USER-debian-$i:$HOME/.ssh/authorized_keys
+docker exec -ti $USER-debian-$i /bin/bash -c "chmod 600 ${HOME}/.ssh/authorized_keys && chown $USER:$USER $HOME/.ssh/authorized_keys"
+```
+
+* Ajout au SUDOERS (ansible) :
+
+```
+docker exec -ti $USER-debian-$i /bin/bash -c "echo '$USER   ALL=(ALL) NOPASSWD: ALL'>>/etc/sudoers"
+```
+
+* Lancement du service ssh :
+
+```
+docker exec -ti $USER-debian-$i /bin/bash -c "service ssh start"
+```

@@ -1,0 +1,61 @@
+%title: SHELL - Objectifs
+%author: xavki
+
+
+
+
+-> SHELL mais pas en mode classique <-
+=========
+
+
+
+<br>
+* éviter le schéma classique : "hello world.."
+
+<br>
+* être opérationnel : scripting par l'exemple
+
+<br>
+* 1ère objectif : reproduire le script de déploiement docker
+
+* voir au fur et à mesure les fonctionnalités utiles
+
+* on apprend les choses et on les met en application
+
+
+-------------------------------------------------------------
+
+
+
+--------------------------------------------------------------
+
+
+-> Utilisation de git <-
+
+
+* essayer de s'organiser
+
+* branche dev / bracnhe prod
+
+* push
+
+
+-> Entête de fichier <-
+
+<br>
+* spécification de l'interpréteur (shebang)
+
+```
+#!/bin/bash
+```
+<br>
+
+* commenter vos scripts (auteur, description, date, version...)
+
+<br>
+* echo : affichage de l'aide par défaut
+	- create-debian
+	- drop
+	- infos
+	- start
+	- ansible

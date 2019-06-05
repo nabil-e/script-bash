@@ -1,0 +1,78 @@
+%title: SHELL - Conditions
+%author: xavki
+
+
+
+
+
+
+-> SHELL : les conditions <-
+=========
+
+* définir une variable
+
+	var="mavariable"
+	echo $mavariable
+
+* un grand classique avec variantes
+
+
+```
+if [<condition>];then
+	....
+elif [<condition>];then
+	....
+else
+	....
+fi
+```
+
+-----------------------------------------------------------------------------
+
+
+-> Opérateurs <-
+
+* variable entre double quotes si string
+
+* opérateurs texte [] :
+	- == : égal
+	- "!=" : différent de 
+	- "!" : négation en général
+
+* opérateur filesystème :
+	- -z : variable vide
+	- -f : fichier existe
+	- -d : répertoire existe
+	
+* opérateur chiffres (()) :
+	- précédents
+	- <= : inf ou égal
+	- >= : sup ou égal
+	- etc
+
+Rq : variante avec l'utilisation [] pour le texte mais autres opérateurs (test)
+	
+
+----------------------------------------------------------------------------
+
+
+-> Arguments <-
+
+
+
+
+./script.sh --create 1
+
+* $1 : premier argument (ex : --create)
+
+* $2 : second argument (ex : 1)
+
+* $# : nombre d'arguments
+
+* $* : tous les arguments en une variable
+
+* $@ : tous les arguments en tableau
+
+* $0 : nom du script
+
+

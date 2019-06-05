@@ -1,0 +1,32 @@
+%title: SHELL - CONSLUION
+%author: xavki
+
+
+
+
+
+
+-> CONCLUSION <-
+=========
+
+
+<br>
+* ajout de bash dans les paquets de l'image
+
+* faire évoluer l'image au fur et à mesure (git, curl, wget...)
+
+<br>
+* dans tous les cas on affiche : --infos
+
+<br>
+* plateforme de test : 
+		- ansible,
+		- test d'outils (non graphique),
+		- développement,
+		- test continu (cron, déclencheur)
+
+
+<br>
+* s'en servir pour apprendre à gérer une mini infra : collecte de data, ha...
+
+

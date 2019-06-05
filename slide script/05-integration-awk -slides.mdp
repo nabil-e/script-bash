@@ -1,0 +1,59 @@
+%title: SHELL - intégration awk
+%author: xavki
+
+
+
+-> SHELL : intégration de awk <-
+=========
+
+
+
+
+* Objectif : connaitre le maximum des id des conteneurs *
+
+<br>
+* imaginons on a déjà fait tourner le script
+
+* on le relance mais on repart du dernier id déjà existant
+
+* y compris si les conteneurs sont arrêtés
+
+--------------------------------------------------------------------------
+
+-> Grandes lignes <-
+
+<br>
+
+* un liste tous les conteneurs avec docker
+
+```
+docker ps -a --format '{{ .Names}}'
+```
+
+<br>
+* filtre sur les conteneurs contenant le user et "alpine"
+
+```
+awk -v user=$USER '$0 ~ user"-alpine" {print $0}'
+```
+
+<br>
+* on retient que le chiffre
+
+```
+awk -F "-" -v user=$USER '$0 ~ user"-alpine" {print $3}'
+```
+
+<br>
+* on retient le chiffre maxi
+
+```
+sort -r | head -1
+```
+
+<br>
+* au final :
+
+```
+docker ps -a --format '{{ .Names }}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r |head -1
+```

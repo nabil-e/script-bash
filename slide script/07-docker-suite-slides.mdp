@@ -1,0 +1,67 @@
+%title: SHELL - suite
+%author: xavki
+
+
+
+-> SHELL : Docker <-
+=========
+
+
+
+
+* Objectif : redémarrer les conteneurs docker *
+
+<br>
+* si service docker arrêté (machine desktop) : arrêt service
+
+* redémarrer les conteneurs
+
+* docker ps = null mais docker ps -a = OK
+
+
+<br>
+Liste des conteneurs à redémarrer (idem drop) :
+
+```
+docker ps -a | grep $USER-alpine | awk '{print $1}'
+```
+
+<br>
+* Ajout du start :
+
+```
+docker start $(docker ps -a | grep $USER-alpine | awk '{print $1}')
+
+```
+
+-----------------------------------------------------------------------------
+
+-> Volet infos des machines <-
+
+
+* Objectif : lister IP et nom machine *
+
+* remplir le le contenu de l'option --infos
+
+<br>
+* Liste des conteneur du script :
+
+```
+docker ps -a | grep $USER-alpine | awk '{print $1}'
+```
+
+<br>
+
+* Trouver les infos l'ip :
+
+```
+docker inspect -f '   => {{.Name}} - {{.NetworkSettings.IPAddress }}' ID
+```
+
+* Boucle for :
+
+```
+for conteneur in $(docker ps -a | grep $USER-alpine | awk '{print $1}');do
+docker inspect -f '   => {{.Name}} - {{.NetworkSettings.IPAddress }}' $conteneur
+done
+```

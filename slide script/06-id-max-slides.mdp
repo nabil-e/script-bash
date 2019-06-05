@@ -1,0 +1,42 @@
+%title: SHELL - ID max
+%author: xavki
+
+
+
+-> SHELL : ID max <-
+=========
+
+
+
+
+* Objectif : adapter le range en fonction de ID max *
+
+<br>
+* Range actuel :
+
+```
+  for i in $(seq 1 $nb_machine);do
+    docker run -tid --name $USER-alpine-$i alpine:latest
+    echo "Conteneur $USER-alpine-$i créé"
+  done
+```
+
+<br>
+* Intégration de ID max :
+
+```
+min=1
+max=0
+
+idmax=`docker ps -a --format '{{ .Names}}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r |head -1`
+
+min=$(($idmax + 1))
+
+max=$(($idmax + $nb_machine)) 
+
+  for i in $(seq $min $max);do
+    docker run -tid --name $USER-alpine-$i alpine:latest
+    echo "Conteneur $USER-alpine-$i créé"
+  done
+```
+
