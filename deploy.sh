@@ -19,10 +19,14 @@ if [ "$1" == "--create" ];then
 	[ "$2" != "" ] && nbr_machine=$2
 
 # récupération de l'id max
-	idmax = `docker ps -a --format '{{ .Names }}' | awk -F "-" -v user=$USER '$0 ~ user"-alpine" { print $4 }' | sort -r | head -1`
-	echo "'idmax: ', ${idmax}";
+	min=1
+	max=0
+	idmax=`docker ps -a --format '{{ .Names }}' | awk -F "-" -v user=$USER '$0 ~ user"-alpine" { print $4 }' | sort -r | head -1`
+	echo "idmax: , ${idmax}"
 	
-	for i in $(seq 1 $nbr_machine);do
+	min=$(($idmax + 1))
+	max=$(($idmax + $nbr_machine))
+	for i in $(seq $min $max);do
 		docker run -tid --name $USER-alpine-$i alpine:latest
 	done
 	echo "J'ai créé ${nbr_machine} containers"
