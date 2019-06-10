@@ -18,22 +18,25 @@ if [ "$1" == "--create" ];then
 	nbr_machine=1
 	[ "$2" != "" ] && nbr_machine=$2
 
-	# récupération de l'id max
-	idmax = $(docker ps -a --format '{{ .Names }}' | awk -F "-" -v user=$USER '$0 ~ user"-alpine" { print $3 }' | sort -r | head -1)
+# récupération de l'id max
+	idmax = `docker ps -a --format '{{ .Names }}' | awk -F "-" -v user=$USER '$0 ~ user"-alpine" { print $4 }' | sort -r | head -1`
+	echo "'idmax: ', ${idmax}";
 	
 	for i in $(seq 1 $nbr_machine);do
 		docker run -tid --name $USER-alpine-$i alpine:latest
 	done
 	echo "J'ai créé ${nbr_machine} containers"
+
 # si option drop
 elif [ "$1" == "--drop" ];then
 	echo ""
-	echo "notre option est --drop"
+	echo "Suppression des containers ..."
 	echo ""
 
-	docker rm -f $(docker ps | grep $USER.alpine | awk '{print $1}')
+	docker rm -f $(docker ps -a | grep $USER-alpine | awk '{print $1}')
 
 	echo "container supprimé"
+
 # si option start
 elif [ "$1" == "--start" ];then
 	echo "notre option est --start"
