@@ -31,8 +31,21 @@ if [ "$1" == "--create" ];then
 	max=$(($idmax + $nbr_machine))
 # création du/des container(s)
 	for i in $(seq $min $max);do
-		docker run -tid --name $USER-alpine-$i alpine:latest
-		echo "container $USER-alpine-$i créé"
+		#docker run -tid --name $USER-alpine-$i alpine:latest
+		docker run -tid --cap-add SYS_ADMIN --publish-all=true -v /srv/data:/srv/html -v /sys/fs/cgroup:ro --name $USER-debian-$i -h $USER-debian-$i alpine # <nom_image> ici = alpine
+	# Création du user en cours (password)
+		docker exec -ti $USER-debian-$i /bin/bash -c "useradd -m -p sa3tHj3/KuYvI $USER"
+		# perl -e 'print crypt("password", "salt"),"\n"'
+	# Installation dela clef publique du user en cours (à générer avant)
+	# Création d'une clef : 'ssh-keygen -t rsa -b 4096
+		docker exec -ti $USER-debian-$i /bin/sh -c "mkdir  ${HOME}/.ssh && chmod 700 ${HOME}/.ssh && chown $USER:$USER $HOME/.ssh"
+    	docker cp $HOME/.ssh/id_rsa.pub $USER-debian-$i:$HOME/.ssh/authorized_keys
+    	docker exec -ti $USER-debian-$i /bin/sh -c "chmod 600 ${HOME}/.ssh/authorized_keys && chown $USER:$USER $HOME/.ssh/authorized_keys"
+	# Ajout au SUDOERS (ansible) :
+		docker exec -ti $USER-debian-$i /bin/sh -c "echo '$USER   ALL=(ALL) NOPASSWD: ALL'>>/etc/sudoers"
+	# Lancement du service ssh
+		docker exec -ti $USER-debian-$i /bin/sh -c "service ssh start"
+		echo "Conteneur $USER-debian-$i créé"
 	done
 	echo "J'ai créé ${nbr_machine} containers"
 
